@@ -1,0 +1,48 @@
+{
+    "name": "enflow/laravel-address",
+    "description": "Address autocomplete with support for multiple drivers",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michel Bardelmeijer",
+            "email": "michel@enflow.nl"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "guzzlehttp/guzzle": "^6.5",
+        "illuminate/http": "^7.0",
+        "illuminate/support": "^7.0",
+        "rinvex/laravel-cacheable": "^4.0",
+        "spatie/laravel-translatable": "^4.3",
+        "symfony/intl": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.0",
+        "phpunit/phpunit": "^8.1",
+        "spatie/phpunit-snapshot-assertions": "^4.0"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Enflow\\Address\\AddressServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Enflow\\Address\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Enflow\\Address\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "items": [
+        {
+            "title": "Wilhelminalaan 2, 2405 ED Alphen aan den Rijn, Nederland",
+            "id": "here:af:streetsection:dA.5Abx8yLpWIcSbvSRzbC:CggIBCDTzuukAhABGgEyKGQ",
+            "resultType": "houseNumber",
+            "houseNumberType": "PA",
+            "address": {
+                "label": "Wilhelminalaan 2, 2405 ED Alphen aan den Rijn, Nederland",
+                "countryCode": "NLD",
+                "countryName": "Nederland",
+                "state": "Zuid-Holland",
+                "county": "Alphen aan den Rijn",
+                "city": "Alphen aan den Rijn",
+                "street": "Wilhelminalaan",
+                "postalCode": "2405 ED",
+                "houseNumber": "2"
+            },
+            "position": {
+                "lat": 52.13059,
+                "lng": 4.6622
+            },
+            "access": [
+                {
+                    "lat": 52.1307,
+                    "lng": 4.66201
+                }
+            ],
+            "mapView": {
+                "west": 4.66073,
+                "south": 52.12969,
+                "east": 4.66367,
+                "north": 52.13149
+            },
+            "scoring": {
+                "queryScore": 1,
+                "fieldScore": {
+                    "city": 1,
+                    "streets": [
+                        1
+                    ],
+                    "houseNumber": 1
+                }
+            }
+        }
+    ]
+}
