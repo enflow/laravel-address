@@ -13,15 +13,8 @@ class SuggestController
     {
         $options = $request->validate([
             'query' => 'string',
-            'limit' => 'min:1|max:100',
-            'language' => 'nullable|string|size:2|alpha',
-            'countries' => 'array',
-            'countries.*' => 'string|size:2|alpha'
+            'limit' => 'integer|min:1|max:100',
         ]);
-
-        if (!empty($options['language']) && in_array($options['language'], config('address.locales'))) {
-            app()->setLocale($options['language']);
-        }
 
         if (empty($request->get('query'))) {
             return [];

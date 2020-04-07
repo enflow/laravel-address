@@ -15,14 +15,13 @@ class CreateAddressesTable extends Migration
             $table->string('identifier');
             $table->unique(['driver', 'identifier']);
 
-            $table->json('label')->nullable();
-            $table->json('street')->nullable();
+            $table->string('label')->nullable();
+            $table->string('street')->nullable();
             $table->string('house_number')->nullable();
-            $table->json('city')->nullable();
+            $table->string('city')->nullable();
             $table->string('postal_code')->nullable();
-            $table->json('state')->nullable();
-            $table->json('county')->nullable();
-
+            $table->string('state')->nullable();
+            $table->string('county')->nullable();
             $table->string('country', 2);
 
             $table->float('lat', 10, 6)->nullable();

@@ -14,7 +14,6 @@ use Symfony\Component\Intl\Countries;
 class Address extends Model
 {
     use CacheableEloquent;
-    use HasTranslations;
     protected $fillable = [
         'driver',
         'identifier',
@@ -29,30 +28,10 @@ class Address extends Model
         'lat',
         'lng',
     ];
-    protected $translatable = [
-        'label',
-        'state',
-        'county',
-        'city',
-        'street',
-    ];
 
-    public function translatableFill(string $language, array $input)
+    public function value()
     {
-        foreach ($input as $key => $value) {
-            if (in_array($key, $this->translatable)) {
-                $this->setTranslation($key, $language, $value);
-            } elseif ($this->isFillable($key)) {
-                $this->{$key} = $value;
-            }
-        }
-
-        return $this;
-    }
-
-    public function toAppLocalizedArray()
-    {
-        return [
+        $values = [
             'driver' => $this->driver,
             'identifier' => $this->identifier,
             'label' => $this->label,
@@ -65,6 +44,10 @@ class Address extends Model
             'country' => $this->country,
             'lat' => $this->lat,
             'lng' => $this->lng,
+        ];
+
+        return $values + [
+            'hmac' => AddressValueTransformer::sign($values),
         ];
     }
 
@@ -92,14 +75,6 @@ class Address extends Model
         ];
     }
 
-    public function value()
-    {
-        return $this->toAppLocalizedArray() + [
-                'language' => app()->getLocale(),
-                'hmac' => AddressValueTransformer::sign($this),
-            ];
-    }
-
     public static function persist($value): ?Address
     {
         if (empty($value)) {
@@ -107,9 +82,6 @@ class Address extends Model
         }
 
         $address = AddressValueTransformer::decode($value);
-        if (!$address) {
-            throw new Exception("Invalid address passed. Should be handelled by the 'IsValidAddress' validation rule.");
-        }
 
         return $address->findOrSave();
     }
@@ -124,10 +96,6 @@ class Address extends Model
         }
 
         $this->save();
-
-        foreach (array_diff(config('address.locales', []), [app()->getLocale()]) as $locale) {
-            LocalizeAddressJob::dispatch($this, $locale)->onQueue(config('address.localize_queue', null));
-        }
 
         return $this;
     }

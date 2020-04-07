@@ -2,33 +2,29 @@
 
 namespace Enflow\Address;
 
+use Enflow\Address\Exceptions\HmacValidationException;
 use Enflow\Address\Models\Address;
+use Illuminate\Support\Arr;
 
 class AddressValueTransformer
 {
-    /**
-     * @param string|array $value
-     * @return Address|null
-     */
-    public static function decode($value): ?Address
+    public static function decode($value): Address
     {
         $value = is_string($value) ? json_decode($value, true) : $value;
 
-        if (empty($value['language']) || empty($value['hmac'])) {
-            return null;
+        if (empty($value['hmac'])) {
+            throw HmacValidationException::required();
         }
 
-        $resource = (new Address())->translatableFill($value['language'], $value);
-
-        if (!hash_equals(static::sign($resource), $value['hmac'])) {
-            return null;
+        if (!hash_equals(static::sign(Arr::except($value, 'hmac')), $value['hmac'])) {
+            throw HmacValidationException::failed();
         }
 
-        return $resource;
+        return new Address($value);
     }
 
-    public static function sign(Address $resource)
+    public static function sign(array $value)
     {
-        return hash_hmac('sha256', json_encode($resource->toAppLocalizedArray()), config('app.key'));
+        return hash_hmac('sha256', json_encode($value), config('app.key'));
     }
 }

@@ -17,42 +17,27 @@ class HereDriver extends Driver
         $this->token = $token;
     }
 
-    /**
-     * @param array $options
-     * @return Collection|Address[]
-     */
     public function suggest(array $options): Collection
     {
         // https://developer.here.com/documentation/geocoding-search-api/api-reference-swagger.html
 
         $response = Http::get('https://' . config('address.hero.endpoints.autosuggest', 'autosuggest.search.hereapi.com') . '/v1/geocode', [
             'q' => $options['query'],
-            'limit' => $options['limit'] ?? 25,
-            'lang' => ($language = $options['language'] ?? 'en'),
+            'limit' => $options['limit'] ?? 5,
+            'lang' => app()->getLocale(),
             'apiKey' => $this->token,
         ]);
 
         return collect($response['items'] ?? null)
-            ->map(function ($item) use ($language) {
-                return $this->suggestionToAddress($language, $item);
+            ->map(function ($item) {
+                return $this->suggestionToAddress($item);
             });
     }
 
-    public function lookup(string $identifier, array $options = []): Address
+    protected function suggestionToAddress(array $item): Address
     {
-        $response = Http::get('https://' . config('address.hero.endpoints.lookup', 'lookup.search.hereapi.com') . '/v1/lookup', [
-            'id' => $identifier,
-            'lang' => ($language = $options['language'] ?? 'en'),
-            'apiKey' => $this->token,
-        ]);
-
-        return $this->suggestionToAddress($language, $response->json());
-    }
-
-    protected function suggestionToAddress(string $language, array $item): Address
-    {
-        return tap(new Address, function (Address $address) use ($language, $item) {
-            $address->translatableFill($language, [
+        return tap(new Address, function (Address $address) use ($item) {
+            $address->fill([
                 'driver' => 'here',
                 'identifier' => Arr::get($item, 'id'),
                 'label' => Arr::get($item, 'address.label'),
