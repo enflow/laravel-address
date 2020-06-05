@@ -2,31 +2,22 @@
 
 namespace Enflow\Address\Test;
 
+use Enflow\Address\Exceptions\CannotFindAddressException;
+use Enflow\Address\Models\Address;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class HereDriverTest extends TestCase
 {
-    protected function getEnvironmentSetUp($app)
-    {
-        $app['config']->set('address', [
-            'driver' => 'here',
-            'here' => [
-                'token' => 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-            ]
-        ]);
-    }
-
     public function test_here_suggest_endpoint()
     {
-        app()->setLocale('en');
-
         Http::fake([
             'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__ . '/fixtures/here-suggest.json'), true)),
         ]);
 
         $response = $this->call('GET', route('address::suggest'), [
             'query' => 'Wilhelminalaan 2, Alphen aan den Rijn',
-         ]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertExactJson(array(
@@ -53,5 +44,29 @@ class HereDriverTest extends TestCase
                     ],
                 ],
             ));
+    }
+
+    public function test_here_address_create_from_string()
+    {
+        Http::fake([
+            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__ . '/fixtures/here-suggest.json'), true)),
+        ]);
+
+        $address = Address::createFromSearch('Wilhelminalaan 2, Alphen aan den Rijn');
+
+        $this->assertDatabaseHas('addresses', ['id' => $address->id]);
+
+        $this->assertNotEmpty($address->lat);
+        $this->assertNotEmpty($address->lng);
+    }
+
+    public function test_here_address_create_from_string_throws_exception_on_no_results()
+    {
+        Http::fake([
+            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__ . '/fixtures/here-suggest-empty.json'), true)),
+        ]);
+
+        $this->expectException(CannotFindAddressException::class);
+        Address::createFromSearch('Middle of nowhere, Nowhere 300');
     }
 }

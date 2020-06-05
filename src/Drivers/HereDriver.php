@@ -34,6 +34,11 @@ class HereDriver extends Driver
             });
     }
 
+    public function search(string $query, array $options = []): ?Address
+    {
+        return $this->suggest(['query' => $query, 'limit' => 1] + $options)->first();
+    }
+
     protected function suggestionToAddress(array $item): Address
     {
         return tap(new Address, function (Address $address) use ($item) {

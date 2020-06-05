@@ -4,7 +4,7 @@
 ![GitHub Workflow Status](https://github.com/enflow-nl/laravel-address/workflows/run-tests/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/enflow/laravel-address.svg?style=flat-square)](https://packagist.org/packages/enflow/laravel-address)
 
-The `enflow/laravel-address` package provides a opinionated way on how to implement address fields with autocomplete. See the []
+The `enflow/laravel-address` package provides a opinionated way on how to implement address fields with autocomplete.
 
 ## Usage
 

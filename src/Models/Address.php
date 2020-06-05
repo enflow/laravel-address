@@ -3,6 +3,8 @@
 namespace Enflow\Address\Models;
 
 use Enflow\Address\AddressValueTransformer;
+use Enflow\Address\DriverManager;
+use Enflow\Address\Exceptions\CannotFindAddressException;
 use Enflow\Address\Jobs\LocalizeAddressJob;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -73,6 +75,17 @@ class Address extends Model
             'alpha2' => $country,
             'alpha3' => Countries::getAlpha3Code($country),
         ];
+    }
+
+    public static function createFromSearch(string $query): ?Address
+    {
+        $address = app(DriverManager::class)->driver()->search($query);
+
+        if (!$address) {
+            throw CannotFindAddressException::searchNoResults($query);
+        }
+
+        return $address->findOrSave();
     }
 
     public static function persist($value): ?Address
