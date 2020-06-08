@@ -31,6 +31,8 @@ class Address extends Model
         'lng',
     ];
 
+    public const DISTANCEKM = 111.1;
+
     public function value()
     {
         $values = [
@@ -111,5 +113,22 @@ class Address extends Model
         $this->save();
 
         return $this;
+    }
+    
+    public function getDistance($address = null)
+    {
+        if (!$address || !($address->lat ?? null) || !($address->lng ?? null)) {
+            return 0;
+        }
+
+        $latDiff = ($this->lat - $address->lat) * self::DISTANCEKM;
+        $lngDiff = ($this->lng - $address->lng) * self::DISTANCEKM;
+
+        return round($this->pythagoras($latDiff, $lngDiff), 3);
+    }
+
+    private function pythagoras(float $x, float $y)
+    {
+        return sqrt(($x**2) + ($y**2));
     }
 }
