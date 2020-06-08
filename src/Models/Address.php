@@ -77,7 +77,7 @@ class Address extends Model
         ];
     }
 
-    public static function createFromSearch(string $query): ?Address
+    public static function createFromSearch(string $query): ?self
     {
         $address = app(DriverManager::class)->driver()->search($query);
 
@@ -88,7 +88,7 @@ class Address extends Model
         return $address->findOrSave();
     }
 
-    public static function persist($value): ?Address
+    public static function persist($value): ?self
     {
         if (empty($value)) {
             return null;
