@@ -2,6 +2,7 @@
 
 namespace Enflow\Address\Drivers;
 
+use Enflow\Address\Exceptions\ConfigurationException;
 use Enflow\Address\Models\Address;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -12,8 +13,12 @@ class HereDriver extends Driver
     protected string $token;
     protected string $endpoint = 'autosuggest.search.hereapi.com';
 
-    public function __construct(string $token)
+    public function __construct(?string $token)
     {
+        if (empty($token)) {
+            throw ConfigurationException::missingToken('here');
+        }
+
         $this->token = $token;
     }
 
