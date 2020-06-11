@@ -28,7 +28,8 @@ class HereDriver extends Driver
 
         $response = Http::get('https://' . config('address.hero.endpoints.autosuggest', 'autosuggest.search.hereapi.com') . '/v1/geocode', [
             'q' => $options['query'],
-            'in' => $options['filter'] ?? config('address.here.default_filter'),
+            'in' => $options['filter'] ?? config('address.here.defaults.filter'),
+            'resultType' => $options['resultType'] ?? config('address.here.defaults.result_type'),
             'limit' => $options['limit'] ?? 5,
             'lang' => app()->getLocale(),
             'apiKey' => $this->token,
@@ -37,6 +38,9 @@ class HereDriver extends Driver
         return collect($response['items'] ?? null)
             ->map(function ($item) {
                 return $this->suggestionToAddress($item);
+            })
+            ->unique(function (Address $address) {
+                return $address->label;
             });
     }
 
