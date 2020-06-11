@@ -20,6 +20,6 @@ class SuggestController
             return [];
         }
 
-        return AddressResource::collection($manager->driver()->suggest($options));
+        return AddressResource::collection($manager->driver()->suggest($request->all()));
     }
 }
