@@ -28,6 +28,7 @@ class HereDriver extends Driver
 
         $response = Http::get('https://' . config('address.hero.endpoints.autosuggest', 'autosuggest.search.hereapi.com') . '/v1/geocode', [
             'q' => $options['query'],
+            'in' => $options['filter'] ?? config('address.here.default_filter'),
             'limit' => $options['limit'] ?? 5,
             'lang' => app()->getLocale(),
             'apiKey' => $this->token,
