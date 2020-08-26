@@ -90,7 +90,7 @@ class Address extends Model
 
     public static function persist($value): ?self
     {
-        if (empty($value)) {
+        if (empty($value) || $value === 'null') {
             return null;
         }
 
