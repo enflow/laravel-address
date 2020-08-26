@@ -16,7 +16,7 @@ class HereDriver extends Driver
     public function __construct(?string $token)
     {
         if (empty($token)) {
-            throw ConfigurationException::missingToken('here');
+            throw ConfigurationException::invalidFor('here');
         }
 
         $this->token = $token;

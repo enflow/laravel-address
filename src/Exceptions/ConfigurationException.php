@@ -6,8 +6,8 @@ use Exception;
 
 class ConfigurationException extends Exception implements AddressException
 {
-    public static function missingToken(string $driver): self
+    public static function invalidFor(string $driver)
     {
-        return new static("Missing token for driver '{$driver}'");
+        return new static("Missing requires credentials for '{$driver}'");
     }
 }

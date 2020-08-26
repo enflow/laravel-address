@@ -77,11 +77,14 @@ Pricing: https://developer.here.com/pricing
 
 You may obtain a API token by [registrating for an account](https://developer.here.com/sign-up?create=Freemium-Basic&keepState=true&step=account).
 
+#### Algolia Places
+Algolia Places is supported of of the box. You must show the 'Search by Algolia' in your search interaction conform their terms: https://community.algolia.com/places/documentation.html#licenses--policies
+
 #### Google Places
-Google Places isn't support out of the box and is something we want to support in the future. PRs are welcome!
+Google Places terms don't allow searching results and storing them. Se for more info: https://developers.google.com/places/web-service/policies
 
 #### Mapbox
-Mapbox isn't support out of the box and is something we want to support in the future. PRs are welcome!
+Mapbox terms don't allow searching results and storing them. See for more info: https://docs.mapbox.com/api/search/#mapboxplaces 
 
 ### 
 
