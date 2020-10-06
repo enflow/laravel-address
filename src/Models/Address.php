@@ -9,13 +9,11 @@ use Enflow\Address\Jobs\LocalizeAddressJob;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Rinvex\Cacheable\CacheableEloquent;
 use Spatie\Translatable\HasTranslations;
 use Symfony\Component\Intl\Countries;
 
 class Address extends Model
 {
-    use CacheableEloquent;
     protected $fillable = [
         'driver',
         'identifier',
