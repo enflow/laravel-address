@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Http;
 
 class HereDriverTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('address.here.token', 'fake-token');
+    }
+
     public function test_here_suggest_endpoint()
     {
         Http::fake([
