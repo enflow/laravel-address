@@ -65,6 +65,13 @@ We **highly recommend** the use of our `@enflow/laravel-address-ui` frontend pac
 
 For installation instructions, see https://github.com/enflow-nl/laravel-address-ui
 
+#### Step 6 - Persisting
+After the form has been submitted, we wish to connect the address info the the model. This can be done with the `Address::persist` method. You may use it like:
+
+```
+$model->address()->associate(Address::persist($request->get('address')));
+```
+
 ## Drivers
 
 We support the following drivers out of the box. This may be extended in the future, and we welcome PRs for new drivers.
