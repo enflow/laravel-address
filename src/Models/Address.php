@@ -14,6 +14,9 @@ use Symfony\Component\Intl\Countries;
 
 class Address extends Model
 {
+    // Ensure it's guarded.
+    protected static $unguarded = false;
+
     protected $fillable = [
         'driver',
         'identifier',
