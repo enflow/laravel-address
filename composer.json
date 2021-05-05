@@ -17,8 +17,8 @@
     },
     "require-dev": {
         "orchestra/testbench": "^6.17",
-        "phpunit/phpunit": "^9.0|^10.0",
-        "spatie/phpunit-snapshot-assertions": "^4.2"
+        "phpunit/phpunit": "^9.3|^10.0",
+        "spatie/phpunit-snapshot-assertions": "^4.0"
     },
     "config": {
         "sort-packages": true
