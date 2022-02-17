@@ -26,7 +26,10 @@ class HereDriver extends Driver
     {
         // https://developer.here.com/documentation/geocoding-search-api/api-reference-swagger.html
 
-        $response = Http::get('https://' . config('address.hero.endpoints.autosuggest', 'autosuggest.search.hereapi.com') . '/v1/geocode', [
+        $response = Http::withOptions([
+            // Here's API encoding seems broken: "cURL error 61: Error while processing content unencoding: incorrect header check"
+            'decode_content' => false,
+        ])->get('https://' . config('address.hero.endpoints.autosuggest', 'autosuggest.search.hereapi.com') . '/v1/geocode', [
             'q' => $options['query'],
             'in' => $options['filter'] ?? config('address.here.defaults.filter'),
             'resultType' => $options['resultType'] ?? config('address.here.defaults.result_type'),
@@ -36,12 +39,8 @@ class HereDriver extends Driver
         ]);
 
         return collect($response['items'] ?? null)
-            ->map(function ($item) {
-                return $this->suggestionToAddress($item);
-            })
-            ->unique(function (Address $address) {
-                return $address->label;
-            });
+            ->map(fn ($item) => $this->suggestionToAddress($item))
+            ->unique(fn (Address $address) => $address->label);
     }
 
     public function search(string $query, array $options = []): ?Address
