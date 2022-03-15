@@ -10,16 +10,13 @@ use Illuminate\Support\Facades\Http;
 
 class HereDriver extends Driver
 {
-    protected string $token;
     protected string $endpoint = 'autosuggest.search.hereapi.com';
 
-    public function __construct(?string $token)
+    public function __construct(protected ?string $token)
     {
-        if (empty($token)) {
+        if (empty($this->token)) {
             throw ConfigurationException::missingToken('here');
         }
-
-        $this->token = $token;
     }
 
     public function suggest(array $options): Collection
