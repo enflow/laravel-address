@@ -33,7 +33,7 @@ class AddressServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../config/address.php', 'address');
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'address');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'address');
     }
 
     protected function defineRoutes()
