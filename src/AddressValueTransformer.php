@@ -16,7 +16,7 @@ class AddressValueTransformer
             throw HmacValidationException::required();
         }
 
-        if (!hash_equals(static::sign(Arr::except($value, 'hmac')), $value['hmac'])) {
+        if (! hash_equals(static::sign(Arr::except($value, 'hmac')), $value['hmac'])) {
             throw HmacValidationException::failed();
         }
 

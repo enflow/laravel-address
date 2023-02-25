@@ -4,7 +4,6 @@ namespace Enflow\Address\Test;
 
 use Enflow\Address\Exceptions\CannotFindAddressException;
 use Enflow\Address\Models\Address;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class HereDriverTest extends TestCase
@@ -19,7 +18,7 @@ class HereDriverTest extends TestCase
     public function test_here_suggest_endpoint()
     {
         Http::fake([
-            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__ . '/fixtures/here-suggest.json'), true)),
+            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__.'/fixtures/here-suggest.json'), true)),
         ]);
 
         $response = $this->call('GET', route('address::suggest'), [
@@ -27,7 +26,7 @@ class HereDriverTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertExactJson(array(
+            ->assertExactJson([
                 'data' => [
                     [
                         'driver' => 'here',
@@ -39,24 +38,23 @@ class HereDriverTest extends TestCase
                         'state' => 'Zuid-Holland',
                         'county' => 'Alphen aan den Rijn',
                         'city' => 'Alphen aan den Rijn',
-                        'country' =>
-                            array(
-                                'name' => 'Netherlands',
-                                'alpha2' => 'NL',
-                                'alpha3' => 'NLD',
-                            ),
+                        'country' => [
+                            'name' => 'Netherlands',
+                            'alpha2' => 'NL',
+                            'alpha3' => 'NLD',
+                        ],
                         'lat' => 52.13059,
                         'lng' => 4.6622,
                         'hmac' => '059819e80a6ccafcb2ec9c6aee5dc1f6b80dfbd382096f309f8798c6759b3b9f',
                     ],
                 ],
-            ));
+            ]);
     }
 
     public function test_here_address_create_from_string()
     {
         Http::fake([
-            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__ . '/fixtures/here-suggest.json'), true)),
+            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__.'/fixtures/here-suggest.json'), true)),
         ]);
 
         $address = Address::createFromSearch('Wilhelminalaan 2, Alphen aan den Rijn');
@@ -70,7 +68,7 @@ class HereDriverTest extends TestCase
     public function test_here_address_create_from_string_throws_exception_on_no_results()
     {
         Http::fake([
-            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__ . '/fixtures/here-suggest-empty.json'), true)),
+            'autosuggest.search.hereapi.com/*' => Http::response(json_decode(file_get_contents(__DIR__.'/fixtures/here-suggest-empty.json'), true)),
         ]);
 
         $this->expectException(CannotFindAddressException::class);

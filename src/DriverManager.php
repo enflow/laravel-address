@@ -2,8 +2,8 @@
 
 namespace Enflow\Address;
 
-use Illuminate\Support\Manager;
 use Enflow\Address\Drivers\Driver;
+use Illuminate\Support\Manager;
 
 class DriverManager extends Manager
 {
