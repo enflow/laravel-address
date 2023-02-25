@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"Enflow\\Address\\Test\\HereDriverTest::test_here_suggest_endpoint":0.061,"Enflow\\Address\\Test\\HereDriverTest::test_here_address_create_from_string":0.012,"Enflow\\Address\\Test\\HereDriverTest::test_here_address_create_from_string_throws_exception_on_no_results":0.003}}

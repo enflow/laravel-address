@@ -6,13 +6,13 @@ use Exception;
 
 class HmacValidationException extends Exception implements AddressException
 {
-    public static function required()
+    public static function required(): self
     {
-        return new static("Hmac was not available on object. Address could not be validated.");
+        return new static('Hmac was not available on object. Address could not be validated.');
     }
 
-    public static function failed()
+    public static function failed(): self
     {
-        return new static("Hmac was available but signed incorrect.");
+        return new static('Hmac was available but signed incorrect.');
     }
 }

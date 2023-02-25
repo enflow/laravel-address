@@ -5,11 +5,8 @@ namespace Enflow\Address\Models;
 use Enflow\Address\AddressValueTransformer;
 use Enflow\Address\DriverManager;
 use Enflow\Address\Exceptions\CannotFindAddressException;
-use Enflow\Address\Jobs\LocalizeAddressJob;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Spatie\Translatable\HasTranslations;
 use Symfony\Component\Intl\Countries;
 
 class Address extends Model
@@ -62,14 +59,14 @@ class Address extends Model
             $country = Countries::getAlpha2Code($country);
         }
 
-        if (!Countries::exists($country)) {
+        if (! Countries::exists($country)) {
             throw new Exception("Invalid country passed to CountryCast: {$country}");
         }
 
         $this->attributes['country'] = $country;
     }
 
-    public function getCountryAttribute($country)
+    public function getCountryAttribute($country): array
     {
         return [
             'name' => Countries::getName($country, app()->getLocale()),
@@ -82,7 +79,7 @@ class Address extends Model
     {
         $address = app(DriverManager::class)->driver()->search($query);
 
-        if (!$address) {
+        if (! $address) {
             throw CannotFindAddressException::searchNoResults($query);
         }
 

@@ -4,7 +4,6 @@ namespace Enflow\Address\Http\Controllers;
 
 use Enflow\Address\DriverManager;
 use Enflow\Address\Http\Resources\AddressResource;
-use Enflow\Address\Models\Address;
 use Illuminate\Http\Request;
 
 class SuggestController
@@ -20,6 +19,6 @@ class SuggestController
             return [];
         }
 
-        return AddressResource::collection($manager->driver()->suggest($request->all()));
+        return AddressResource::collection($manager->driver()->suggest($options));
     }
 }

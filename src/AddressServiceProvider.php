@@ -2,8 +2,6 @@
 
 namespace Enflow\Address;
 
-use Enflow\Address\Http\Controllers\SuggestController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AddressServiceProvider extends ServiceProvider
@@ -14,12 +12,12 @@ class AddressServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/address.php' => config_path('address.php'),
+                __DIR__.'/../config/address.php' => config_path('address.php'),
             ], 'config');
 
-            if (!class_exists('CreateAddressesTable')) {
+            if (! class_exists('CreateAddressesTable')) {
                 $this->publishes([
-                    __DIR__ . '/../database/migrations/create_addresses_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_addresses_table.php'),
+                    __DIR__.'/../database/migrations/create_addresses_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_addresses_table.php'),
                 ], 'migrations');
             }
         }
@@ -27,11 +25,9 @@ class AddressServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->singleton(DriverManager::class, function ($app) {
-            return new DriverManager($app);
-        });
+        $this->app->singleton(DriverManager::class, fn ($app) => new DriverManager($app));
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/address.php', 'address');
+        $this->mergeConfigFrom(__DIR__.'/../config/address.php', 'address');
 
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'address');
     }
@@ -42,6 +38,6 @@ class AddressServiceProvider extends ServiceProvider
             return;
         }
 
-        require __DIR__ . '/Http/routes.php';
+        require __DIR__.'/Http/routes.php';
     }
 }

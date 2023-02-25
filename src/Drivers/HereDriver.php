@@ -26,7 +26,7 @@ class HereDriver extends Driver
         $response = Http::withOptions([
             // Here's API encoding seems broken: "cURL error 61: Error while processing content unencoding: incorrect header check"
             'decode_content' => false,
-        ])->get('https://' . config('address.hero.endpoints.autosuggest', 'autosuggest.search.hereapi.com') . '/v1/geocode', [
+        ])->get('https://'.config('address.hero.endpoints.autosuggest', 'autosuggest.search.hereapi.com').'/v1/geocode', [
             'q' => $options['query'],
             'in' => $options['filter'] ?? config('address.here.defaults.filter'),
             'resultType' => $options['resultType'] ?? config('address.here.defaults.result_type'),

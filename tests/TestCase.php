@@ -2,7 +2,6 @@
 
 namespace Enflow\Address\Test;
 
-use Illuminate\Support\Facades\Http;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
 
 abstract class TestCase extends TestbenchTestCase
@@ -14,16 +13,16 @@ abstract class TestCase extends TestbenchTestCase
         app()->setLocale('en');
 
         $this->app['config']->set('database.default', 'testbench');
-        $this->app['config']->set('database.connections.testbench', array(
-            'driver'   => 'sqlite',
+        $this->app['config']->set('database.connections.testbench', [
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
-        ));
+            'prefix' => '',
+        ]);
 
-        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             \Enflow\Address\AddressServiceProvider::class,
