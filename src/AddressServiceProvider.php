@@ -25,7 +25,7 @@ class AddressServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->singleton(DriverManager::class, fn($app) => new DriverManager($app));
+        $this->app->singleton(DriverManager::class, fn ($app) => new DriverManager($app));
 
         $this->mergeConfigFrom(__DIR__.'/../config/address.php', 'address');
 
