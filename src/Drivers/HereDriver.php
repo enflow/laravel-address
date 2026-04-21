@@ -36,6 +36,7 @@ class HereDriver extends Driver
         ]);
 
         return collect($response['items'] ?? null)
+            ->filter(fn ($item) => Arr::has($item, 'address.countryCode'))
             ->map(fn ($item) => $this->suggestionToAddress($item))
             ->unique(fn (Address $address) => $address->label);
     }
