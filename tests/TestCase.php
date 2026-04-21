@@ -2,6 +2,7 @@
 
 namespace Enflow\Address\Test;
 
+use Enflow\Address\AddressServiceProvider;
 use Orchestra\Testbench\TestCase as TestbenchTestCase;
 
 abstract class TestCase extends TestbenchTestCase
@@ -25,7 +26,7 @@ abstract class TestCase extends TestbenchTestCase
     protected function getPackageProviders($app): array
     {
         return [
-            \Enflow\Address\AddressServiceProvider::class,
+            AddressServiceProvider::class,
         ];
     }
 }
